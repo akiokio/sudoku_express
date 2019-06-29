@@ -2,10 +2,10 @@
   "name": "express-api",
   "version": "1.0.0",
   "description": "A modern boilerplate for expressjs APIs",
-  "main": "src/index.js",
+  "main": "src/app.js",
   "module": "src/app.js",
   "scripts": {
-    "start": "nodemon src/index.js",
+    "start": "nodemon src/app.js",
     "test": "mocha --recursive './src/**/*.test.js' --require esm --watch --reporter spec --exit"
   },
   "keywords": [],
@@ -17,18 +17,14 @@
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
-    "esm": "^3.2.25",
     "express": "^4.17.1",
     "morgan": "^1.9.1",
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.8.12",
+    "sequelize": "^5.9.0",
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^6.1.4",
-    "nock": "^10.0.6",
     "nodemon": "^1.19.1",
     "supertest": "^4.0.2"
   }

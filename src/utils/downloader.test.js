@@ -1,7 +1,7 @@
-import { expect } from "chai";
-import nock from "nock";
+const { expect } = require("chai");
+const nock = require("nock");
 
-import { downloadJson } from "./downloader";
+const { downloadJson } = require("./downloader");
 
 describe("downloadJson", () => {
   const mockJson = {

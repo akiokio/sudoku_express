@@ -1,7 +1,13 @@
-import express from "express";
+const express = require("express");
 const router = express.Router();
 
-import { home, one, post, downloader, reader } from "../controllers/common";
+const {
+  home,
+  one,
+  post,
+  downloader,
+  reader
+} = require("../controllers/common");
 
 router.get("/", home);
 router.get("/one", one);
@@ -10,4 +16,4 @@ router.get("/reader", reader);
 
 router.post("/", post);
 
-export default router;
+module.exports = router;

@@ -1,19 +1,19 @@
-import { downloadJson } from "../utils/downloader";
-import { readJson } from "../utils/fileReader";
+const { downloadJson } = require("../utils/downloader");
+const { readJson } = require("../utils/fileReader");
 
-export const home = (req, res) => {
+const home = (req, res) => {
   res.send("Hello common route");
 };
 
-export const one = (req, res) => {
+const one = (req, res) => {
   res.send("Hello common one");
 };
 
-export const post = (req, res) => {
+const post = (req, res) => {
   res.send("Got a POST request");
 };
 
-export const downloader = async (req, res) => {
+const downloader = async (req, res) => {
   if (!req.query.url) {
     res.status(400).send("url param is required");
   }
@@ -27,7 +27,7 @@ export const downloader = async (req, res) => {
   }
 };
 
-export const reader = async (req, res) => {
+const reader = async (req, res) => {
   if (!req.query.path) {
     res.status(400).send("path param is required");
   }
@@ -39,4 +39,12 @@ export const reader = async (req, res) => {
     console.error(error);
     res.status(500).send(error);
   }
+};
+
+module.exports = {
+  home,
+  one,
+  post,
+  downloader,
+  reader
 };

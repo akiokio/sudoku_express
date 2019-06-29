@@ -1,6 +1,6 @@
-import http from "http";
+const http = require("http");
 
-export const downloadJson = url => {
+const downloadJson = url => {
   return new Promise((resolve, reject) => {
     http.get(url, res => {
       const { statusCode } = res;
@@ -40,3 +40,5 @@ export const downloadJson = url => {
     });
   });
 };
+
+module.exports = { downloadJson };

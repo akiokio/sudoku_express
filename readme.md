@@ -11,7 +11,7 @@
 ## Install
 
 ```sh
-npm install
+yarn install
 ```
 
 ## Usage
@@ -30,12 +30,13 @@ yarn test
 
 👤 **Guilherme Akio Sakae**
 
-* Twitter: [@akiokio](https://twitter.com/akiokio)
-* Github: [@akiokio](https://github.com/akiokio)
+- Twitter: [@akiokio](https://twitter.com/akiokio)
+- Github: [@akiokio](https://github.com/akiokio)
 
 ## Show your support
 
 Give a ⭐️ if this project helped you!
 
-***
+---
+
 _This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_

@@ -1,5 +1,5 @@
-import request from "supertest";
-import nock from "nock";
+const request = require("supertest");
+const nock = require("nock");
 
 describe("common api routes", () => {
   const server = require("../index").default;

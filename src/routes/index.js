@@ -1,7 +1,7 @@
-import express from "express";
+const express = require("express");
 const router = express.Router();
 
-import commonRoutes from "./common";
+const commonRoutes = require("./common");
 
 router.get("/", (req, res) => {
   res.send("Hello world");
@@ -13,4 +13,4 @@ router.use((req, res, next) => {
   res.status(404).send("Sorry can't find that!");
 });
 
-export default router;
+module.exports = router;

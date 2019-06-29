@@ -1,6 +1,6 @@
-import fs from "fs";
+const fs = require("fs");
 
-export const readJson = path => {
+const readJson = path => {
   return new Promise((resolve, reject) => {
     const readStream = fs.createReadStream(path);
     let rawData = "";
@@ -18,4 +18,8 @@ export const readJson = path => {
       reject(error);
     });
   });
+};
+
+module.exports = {
+  readJson
 };

@@ -1,4 +1,4 @@
-import request from "supertest";
+const request = require("supertest");
 
 describe("loading express", () => {
   const server = require("../index").default;
