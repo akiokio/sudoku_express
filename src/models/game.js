@@ -6,7 +6,7 @@ const { shuffle } = require("lodash");
 
 const EMPTY_VALUE = 0;
 const BOARD_SIZE = 9;
-let VALID_DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const VALID_DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 class Game extends Sequelize.Model {
   static init(sequelize, DataTypes) {
@@ -49,32 +49,60 @@ class Game extends Sequelize.Model {
       this.generateBoard();
     }
 
-    for (let i = 0; i < Math.pow(BOARD_SIZE, 2); i++) {
-      const rowIndex = Math.floor(i / BOARD_SIZE);
-      const colIndex = i % BOARD_SIZE;
-      const cellValue = this.board[rowIndex][colIndex];
-      if (cellValue == EMPTY_VALUE) {
-        VALID_DIGITS = shuffle(VALID_DIGITS);
-        for (let digit of VALID_DIGITS) {
-          if (
-            !this.isUsedInRow(rowIndex, digit) &&
-            !this.isUsedInColumn(colIndex, digit) &&
-            !this.isUsedInBox(rowIndex, colIndex, digit)
-          ) {
-            this.board[rowIndex][colIndex] = digit;
-            if (this.isGridFull()) {
-              return true;
-            } else {
-              if (this.populateBoard()) {
-                return true;
-              }
-            }
-          }
-        }
+    return this.solveBoard(0, 0);
+  }
+
+  solveBoard(currentRow, currentCol) {
+    const [found, row, col] = this.getNextEmptySpace(currentRow, currentCol);
+    if (!found) {
+      return true;
+    }
+    const possibleNumbers = this.getPossibleNumbers(row, col);
+    for (let number of possibleNumbers) {
+      this.board[row][col] = number;
+
+      if (this.solveBoard(row, col)) {
+        return true;
+      } else {
+        // Backtrack and let return false to try again
+        this.board[row][col] = EMPTY_VALUE;
       }
     }
-
     return false;
+  }
+
+  getNextEmptySpace(currentRow, currentCol) {
+    let candidateRow,
+      candidateCol,
+      found = false;
+
+    for (
+      let i = currentCol + currentRow * BOARD_SIZE;
+      i < Math.pow(BOARD_SIZE, 2);
+      i++
+    ) {
+      candidateRow = Math.floor(i / BOARD_SIZE);
+      candidateCol = i % BOARD_SIZE;
+      if (this.board[candidateRow][candidateCol] == EMPTY_VALUE) {
+        found = true;
+        return [found, candidateRow, candidateCol];
+      }
+    }
+    return [false, candidateRow, candidateCol];
+  }
+
+  getPossibleNumbers(row, col) {
+    let localValidDigits = shuffle([...VALID_DIGITS]).filter(number => {
+      if (
+        this.isUsedInRow(row, number) ||
+        this.isUsedInColumn(col, number) ||
+        this.isUsedInBox(row, col, number)
+      ) {
+        return false;
+      }
+      return true;
+    });
+    return localValidDigits;
   }
 
   isUsedInRow(rowIndex, value) {
@@ -139,7 +167,7 @@ class Game extends Sequelize.Model {
     });
   }
 
-  isGridFull() {
+  isBoardComplete() {
     let isFull = true;
     this.board.forEach(row => {
       if (row.includes(EMPTY_VALUE)) {

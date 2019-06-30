@@ -52,8 +52,8 @@ describe("Game", () => {
   });
 
   test("is should verify is the board is full", () => {
-    expect(game.isGridFull()).toBeFalsy();
+    expect(game.isBoardComplete()).toBeFalsy();
     game.board = fullBoard;
-    expect(game.isGridFull()).toBeTruthy();
+    expect(game.isBoardComplete()).toBeTruthy();
   });
 });
