@@ -27,6 +27,7 @@ class Game extends BoardEngine(Sequelize.Model) {
 
   initBoard() {
     this.generateBoard();
+    this.fuzzyBoard(17, 10);
   }
 }
 

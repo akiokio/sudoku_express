@@ -84,11 +84,9 @@ const BoardEngine = Board =>
 
     isUsedInColumn(colIndex, value) {
       const columnValues = [];
-      Array(BOARD_SIZE)
-        .fill()
-        .map((_, i) => {
-          columnValues.push(this.board[i][colIndex]);
-        });
+      for (let i = 0; i < BOARD_SIZE; i++) {
+        columnValues.push(this.board[i][colIndex]);
+      }
       return columnValues.includes(value);
     }
 
@@ -148,6 +146,22 @@ const BoardEngine = Board =>
         }
       });
       return isFull;
+    }
+
+    applyRandomEmptySpace() {
+      const randomRow = Math.floor(Math.random() * BOARD_SIZE);
+      const randomColumn = Math.floor(Math.random() * BOARD_SIZE);
+      if (this.board[randomRow][randomColumn] == EMPTY_VALUE) {
+        this.applyRandomEmptySpace();
+      } else {
+        this.board[randomRow][randomColumn] = EMPTY_VALUE;
+      }
+    }
+
+    fuzzyBoard(desiredEmptySpaces) {
+      for (let i = 0; i < desiredEmptySpaces; i++) {
+        this.applyRandomEmptySpace();
+      }
     }
   };
 
