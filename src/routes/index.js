@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 
-const commonRoutes = require("./common");
+const sudokuRoutes = require("./sudoku");
 
 router.get("/", (req, res) => {
-  res.send("Hello world");
+  res.send("Please visit http://localhost:8000/sudoku");
 });
 
-router.use("/common", commonRoutes);
+router.use("/sudoku", sudokuRoutes);
 
 router.use((req, res, next) => {
   res.status(404).send("Sorry can't find that!");
