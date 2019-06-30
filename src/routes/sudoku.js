@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const { start } = require("../controllers/sudoku");
+const { home, start } = require("../controllers/sudoku");
 
-router.get("/", start);
+router.get("/", home);
+router.get("/start", start);
 
 module.exports = router;
