@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     "game",
     {
       name: DataTypes.STRING,
-      board: sequelize.ARRAY(sequelize.ARRAY(sequelize.INTEGER))
+      board: DataTypes.ARRAY(DataTypes.ARRAY(DataTypes.INTEGER))
     },
     {}
   );
