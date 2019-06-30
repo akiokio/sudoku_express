@@ -10,7 +10,7 @@ const BoardEngine = Board =>
       return super.init(sequelize, DataTypes);
     }
 
-    generateBoard() {
+    generateEmptyBoard() {
       this.board = Array(BOARD_SIZE)
         .fill()
         .map(() =>
@@ -18,6 +18,10 @@ const BoardEngine = Board =>
             .fill()
             .map(() => EMPTY_VALUE)
         );
+    }
+
+    generateBoard() {
+      if (!this.board) this.generateEmptyBoard();
       this.solveBoard(0, 0);
     }
 
