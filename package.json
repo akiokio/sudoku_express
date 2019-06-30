@@ -6,7 +6,7 @@
   "module": "src/app.js",
   "scripts": {
     "start": "nodemon src/app.js",
-    "test": "mocha --recursive './src/**/*.test.js' --require esm --watch --reporter spec --exit"
+    "test": ""
   },
   "keywords": [],
   "author": "",
@@ -22,7 +22,10 @@
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.9.0",
-    "serve-favicon": "^2.5.0"
+    "sequelize-cli": "^5.5.0",
+    "sequelize-pg-utilities": "^1.2.1",
+    "serve-favicon": "^2.5.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "nodemon": "^1.19.1",
