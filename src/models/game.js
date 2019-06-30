@@ -1,10 +1,10 @@
 "use strict";
-
+const Sequelize = require("sequelize");
 const slugify = require("slugify");
 
-const Board = require("../engines/board");
+const BoardEngine = require("../engines/board");
 
-class Game extends Board {
+class Game extends BoardEngine(Sequelize.Model) {
   static init(sequelize, DataTypes) {
     return super.init(
       {
