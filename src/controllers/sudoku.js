@@ -19,8 +19,10 @@ const start = asyncMiddleware(async (req, res) => {
     name: req.query.name || faker.lorem.words(2)
   });
 
-  game.initGame();
+  game.initBoard();
   game.save();
+
+  game.printBoard();
   res.json(game);
 });
 
