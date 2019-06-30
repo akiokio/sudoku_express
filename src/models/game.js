@@ -115,6 +115,8 @@ class Game extends Sequelize.Model {
       throw Error("Box: invalid position!");
     }
 
+    let isUsed = false;
+
     Array(3)
       .fill()
       .forEach((_, i) => {
@@ -124,11 +126,11 @@ class Game extends Sequelize.Model {
             if (
               this.board[boxStartRowIndex + i][boxColStartIndex + j] == value
             ) {
-              return true;
+              isUsed = true;
             }
           });
       });
-    return false;
+    return isUsed;
   }
 
   printBoard() {
