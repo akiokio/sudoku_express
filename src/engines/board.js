@@ -138,14 +138,15 @@ const BoardEngine = Board =>
     }
 
     isBoardComplete() {
-      let isFull = true;
-      debugger;
+      let isComplete = true;
       this.board.forEach(row => {
-        if (row.includes(EMPTY_VALUE)) {
-          isFull = false;
-        }
+        row.forEach(item => {
+          if (!this.isValueValid(item)) {
+            isComplete = false;
+          }
+        });
       });
-      return isFull;
+      return isComplete;
     }
 
     isEmptySpace(row, col) {

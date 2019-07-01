@@ -64,7 +64,7 @@ describe("Game", () => {
     expect(game.isUsedInBox(2, 2, 8)).toBeTruthy();
   });
 
-  test("is should verify is the board is full", () => {
+  test("is should verify is the board is complete", () => {
     expect(game.isBoardComplete()).toBeFalsy();
     game.board = fullBoard;
     expect(game.isBoardComplete()).toBeTruthy();
