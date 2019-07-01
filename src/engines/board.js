@@ -44,6 +44,18 @@ const BoardEngine = Board =>
       return false;
     }
 
+    fuzzyBoard(desiredEmptySpaces) {
+      for (let i = 0; i < desiredEmptySpaces; i++) {
+        this.applyRandomEmptySpace();
+      }
+    }
+
+    printBoard() {
+      this.board.forEach(row => {
+        console.log(row.join(","));
+      });
+    }
+
     getNextEmptySpace(currentRow, currentCol) {
       let candidateRow,
         candidateCol,
@@ -66,14 +78,7 @@ const BoardEngine = Board =>
 
     getPossibleNumbers(row, col) {
       let localValidDigits = shuffle([...VALID_DIGITS]).filter(number => {
-        if (
-          this.isUsedInRow(row, number) ||
-          this.isUsedInColumn(col, number) ||
-          this.isUsedInBox(row, col, number)
-        ) {
-          return false;
-        }
-        return true;
+        return this.isValueApplicable(row, col, number);
       });
       return localValidDigits;
     }
@@ -132,14 +137,9 @@ const BoardEngine = Board =>
       return isUsed;
     }
 
-    printBoard() {
-      this.board.forEach(row => {
-        console.log(row.join(","));
-      });
-    }
-
     isBoardComplete() {
       let isFull = true;
+      debugger;
       this.board.forEach(row => {
         if (row.includes(EMPTY_VALUE)) {
           isFull = false;
@@ -162,10 +162,36 @@ const BoardEngine = Board =>
       }
     }
 
-    fuzzyBoard(desiredEmptySpaces) {
-      for (let i = 0; i < desiredEmptySpaces; i++) {
-        this.applyRandomEmptySpace();
+    isValueValid(value) {
+      if (value < 1 || value > 9) {
+        return false;
       }
+      return true;
+    }
+
+    isValueApplicable(row, col, value) {
+      if (
+        this.isUsedInRow(row, value) ||
+        this.isUsedInColumn(col, value) ||
+        this.isUsedInBox(row, col, value)
+      ) {
+        return false;
+      }
+      return true;
+    }
+
+    isRowValid(row) {
+      if (row < 0 || row > BOARD_SIZE - 1) {
+        return false;
+      }
+      return true;
+    }
+
+    isColValid(col) {
+      if (col < 0 || col > BOARD_SIZE - 1) {
+        return false;
+      }
+      return true;
     }
   };
 

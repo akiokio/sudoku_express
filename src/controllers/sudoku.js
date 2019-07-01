@@ -64,6 +64,13 @@ const updateBoard = asyncMiddleware(async (req, res) => {
     }
   });
 
+  if (!game) {
+    return res.status(404).json({
+      success: false,
+      error: "Game not found"
+    });
+  }
+
   if (!("row" in req.body) || !("col" in req.body) || !("val" in req.body)) {
     return res.status(400).json({
       success: false,
@@ -72,13 +79,38 @@ const updateBoard = asyncMiddleware(async (req, res) => {
     });
   }
 
+  if (!game.isRowValid(row)) {
+    return res
+      .status(400)
+      .json({ success: false, error: "Row is not valid", board: game.board });
+  }
+
+  if (!game.isColValid(col)) {
+    return res
+      .status(400)
+      .json({ success: false, error: "Col is not valid", board: game.board });
+  }
+
+  if (!game.isValueValid(val)) {
+    return res
+      .status(400)
+      .json({ success: false, error: "Value is not valid", board: game.board });
+  }
+
   if (!game.isEmptySpace(row, col)) {
     return res
       .status(400)
       .json({ success: false, error: "Space not empty", board: game.board });
   }
 
-  // Results will be an empty array and metadata will contain the number of affected rows.
+  if (!game.isValueApplicable(row, col, val)) {
+    return res.status(400).json({
+      success: false,
+      error: "This value cannot be applied here",
+      board: game.board
+    });
+  }
+
   await models.sequelize.query(
     `UPDATE "Games" SET board[${row + 1}][${col + 1}] = ${val} WHERE id = '${
       req.params.id
@@ -86,9 +118,18 @@ const updateBoard = asyncMiddleware(async (req, res) => {
   );
   await game.reload();
 
+  if (game.isBoardComplete()) {
+    return res.status(200).json({
+      success: true,
+      board: game.board,
+      message: "Congratulations you finish this puzze!"
+    });
+  }
+
   return res.json({
     success: true,
-    board: game.board
+    board: game.board,
+    message: "Still work to do, keep going!"
   });
 });
 

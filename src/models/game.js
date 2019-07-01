@@ -10,7 +10,7 @@ class Game extends BoardEngine(Sequelize.Model) {
       {
         name: DataTypes.STRING,
         slug: DataTypes.STRING,
-        board: DataTypes.ARRAY(DataTypes.ARRAY(DataTypes.STRING))
+        board: DataTypes.ARRAY(DataTypes.ARRAY(DataTypes.INTEGER))
       },
       {
         sequelize,
