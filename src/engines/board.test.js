@@ -29,6 +29,18 @@ describe("Game", () => {
     [3, 4, 5, 2, 8, 6, 1, 7, 9]
   ];
 
+  const unsolvableBoard = [
+    [5, 1, 6, 8, 4, 9, 7, 3, 2],
+    [3, 0, 7, 6, 0, 5, 0, 0, 0],
+    [8, 0, 9, 7, 0, 0, 0, 6, 5],
+    [1, 3, 5, 0, 6, 0, 9, 0, 7],
+    [4, 7, 2, 5, 9, 1, 0, 0, 6],
+    [9, 6, 8, 3, 7, 0, 0, 5, 0],
+    [2, 5, 3, 1, 8, 6, 0, 7, 4],
+    [6, 8, 4, 2, 0, 7, 5, 0, 0],
+    [7, 9, 1, 0, 5, 0, 6, 0, 8]
+  ];
+
   test("it should init an empty board", () => {
     game.generateEmptyBoard();
     expect(game.board).toEqual(emptyBoard);
@@ -56,5 +68,10 @@ describe("Game", () => {
     expect(game.isBoardComplete()).toBeFalsy();
     game.board = fullBoard;
     expect(game.isBoardComplete()).toBeTruthy();
+  });
+
+  test("it should not solve an unsolvable board", () => {
+    game.board = unsolvableBoard;
+    expect(game.solveBoard(0, 0)).toBeFalsy();
   });
 });
