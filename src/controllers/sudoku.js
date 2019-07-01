@@ -2,7 +2,6 @@ const faker = require("faker");
 
 const asyncMiddleware = require("../middlewares/async");
 const models = require("../models");
-const { EMPTY_VALUE } = require("../engines/board");
 
 const home = asyncMiddleware(async (req, res) => {
   const games = await models.Game.findAll();
@@ -73,24 +72,22 @@ const updateBoard = asyncMiddleware(async (req, res) => {
     });
   }
 
-  if (game.board[row][col] != EMPTY_VALUE) {
+  if (!game.isEmptySpace(row, col)) {
     return res
       .status(400)
       .json({ success: false, error: "Space not empty", board: game.board });
   }
 
   // Results will be an empty array and metadata will contain the number of affected rows.
-  const [_, metadata] = await models.sequelize.query(
+  await models.sequelize.query(
     `UPDATE "Games" SET board[${row + 1}][${col + 1}] = ${val} WHERE id = '${
       req.params.id
     }';`
   );
-
   await game.reload();
 
-  res.json({
+  return res.json({
     success: true,
-    affected: metadata.rowCount,
     board: game.board
   });
 });

@@ -56,7 +56,7 @@ const BoardEngine = Board =>
       ) {
         candidateRow = Math.floor(i / BOARD_SIZE);
         candidateCol = i % BOARD_SIZE;
-        if (this.board[candidateRow][candidateCol] == EMPTY_VALUE) {
+        if (this.isEmptySpace(candidateRow, candidateCol)) {
           found = true;
           return [found, candidateRow, candidateCol];
         }
@@ -146,6 +146,10 @@ const BoardEngine = Board =>
         }
       });
       return isFull;
+    }
+
+    isEmptySpace(row, col) {
+      return this.board[row][col] == EMPTY_VALUE;
     }
 
     applyRandomEmptySpace() {
