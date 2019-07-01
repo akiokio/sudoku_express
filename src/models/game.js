@@ -27,7 +27,12 @@ class Game extends BoardEngine(Sequelize.Model) {
 
   initBoard() {
     this.generateBoard();
-    this.fuzzyBoard(17, 10);
+    // Desired number of empty spaces on the board
+    this.fuzzyBoard(17);
+  }
+
+  getPlayUrl(req) {
+    return `${req.protocol}://${req.headers.host}/sudoku/play/${this.id}`;
   }
 }
 
