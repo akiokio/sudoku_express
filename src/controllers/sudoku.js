@@ -2,6 +2,7 @@ const faker = require("faker");
 
 const asyncMiddleware = require("../middlewares/async");
 const models = require("../models");
+const { EMPTY_VALUE } = require("../engines/board");
 
 const home = asyncMiddleware(async (req, res) => {
   const games = await models.Game.findAll();
@@ -58,21 +59,39 @@ const updateBoard = asyncMiddleware(async (req, res) => {
   const col = req.body["col"];
   const val = req.body["val"];
 
-  if (!row || !col || !val) {
+  const [game] = await models.Game.findAll({
+    where: {
+      id: req.params.id
+    }
+  });
+
+  if (!("row" in req.body) || !("col" in req.body) || !("val" in req.body)) {
+    return res.status(400).json({
+      success: false,
+      error: "Row, col or val empty",
+      board: game.board
+    });
+  }
+
+  if (game.board[row][col] != EMPTY_VALUE) {
     return res
       .status(400)
-      .json({ success: false, error: "Row, col or val empty" });
+      .json({ success: false, error: "Space not empty", board: game.board });
   }
 
   // Results will be an empty array and metadata will contain the number of affected rows.
-  const [results, metadata] = await models.sequelize.query(
-    `UPDATE "Games" SET board[${row}][${col}] = ${val} WHERE id = '${
+  const [_, metadata] = await models.sequelize.query(
+    `UPDATE "Games" SET board[${row + 1}][${col + 1}] = ${val} WHERE id = '${
       req.params.id
     }';`
   );
+
+  await game.reload();
+
   res.json({
     success: true,
-    affected: metadata.rowCount
+    affected: metadata.rowCount,
+    board: game.board
   });
 });
 
