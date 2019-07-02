@@ -1,5 +1,5 @@
 {
-  "name": "express-api",
+  "name": "sudoku_express",
   "version": "1.0.0",
   "description": "A modern boilerplate for expressjs APIs",
   "main": "src/app.js",

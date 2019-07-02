@@ -8,10 +8,9 @@ const home = asyncMiddleware(async (req, res) => {
   res.json({
     success: true,
     games: games.map(game => ({
-      [game.slug]: {
-        name: game.name,
-        url: game.getPlayUrl(req)
-      }
+      id: game.id,
+      name: game.name,
+      url: game.getPlayUrl(req)
     }))
   });
 });
@@ -48,6 +47,7 @@ const play = asyncMiddleware(async (req, res) => {
     success: true,
     game: {
       url: game.getPlayUrl(req),
+      name: game.name,
       board: game.board
     }
   });
@@ -75,39 +75,39 @@ const updateBoard = asyncMiddleware(async (req, res) => {
     return res.status(400).json({
       success: false,
       error: "Row, col or val empty",
-      board: game.board
+      game
     });
   }
 
   if (!game.isRowValid(row)) {
     return res
       .status(400)
-      .json({ success: false, error: "Row is not valid", board: game.board });
+      .json({ success: false, error: "Row is not valid", game });
   }
 
   if (!game.isColValid(col)) {
     return res
       .status(400)
-      .json({ success: false, error: "Col is not valid", board: game.board });
+      .json({ success: false, error: "Col is not valid", game });
   }
 
   if (!game.isValueValid(val)) {
     return res
       .status(400)
-      .json({ success: false, error: "Value is not valid", board: game.board });
+      .json({ success: false, error: "Value is not valid", game });
   }
 
   if (!game.isEmptySpace(row, col)) {
     return res
       .status(400)
-      .json({ success: false, error: "Space not empty", board: game.board });
+      .json({ success: false, error: "Space not empty", game });
   }
 
   if (!game.isValueApplicable(row, col, val)) {
     return res.status(400).json({
       success: false,
       error: "This value cannot be applied here",
-      board: game.board
+      game
     });
   }
 
@@ -121,14 +121,15 @@ const updateBoard = asyncMiddleware(async (req, res) => {
   if (game.isBoardComplete()) {
     return res.status(200).json({
       success: true,
-      board: game.board,
+      boardCompleted: true,
+      game,
       message: "Congratulations you finish this puzze!"
     });
   }
 
   return res.json({
     success: true,
-    board: game.board,
+    game,
     message: "Still work to do, keep going!"
   });
 });
