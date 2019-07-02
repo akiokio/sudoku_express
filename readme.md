@@ -7,10 +7,17 @@
 </p>
 
 > A Restful API for sudoku games
+> 
 
 ## Live demo
+[ReactJS UI](https://sudoku.akio.dev/)
 
 [Restful API](https://sudokuexpressapi.herokuapp.com/sudoku)
+
+## Client repository (also open-source)
+
+[ReactJs Client](https://github.com/akiokio/sudoku_express_client)
+
 
 ## Install
 
