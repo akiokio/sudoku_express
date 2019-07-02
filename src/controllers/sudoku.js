@@ -54,9 +54,9 @@ const play = asyncMiddleware(async (req, res) => {
 });
 
 const updateBoard = asyncMiddleware(async (req, res) => {
-  const row = req.body["row"];
-  const col = req.body["col"];
-  const val = req.body["val"];
+  const row = parseInt(req.body["row"]);
+  const col = parseInt(req.body["col"]);
+  const val = parseInt(req.body["val"]);
 
   const [game] = await models.Game.findAll({
     where: {
