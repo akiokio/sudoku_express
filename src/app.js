@@ -13,7 +13,7 @@ const { configure } = require("sequelize-pg-utilities");
 
 const routes = require("./routes");
 
-const config = require("./config/config.json");
+const config = require("./config/config.js");
 
 const { name, user, password, options } = configure(config);
 
