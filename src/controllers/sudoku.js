@@ -134,9 +134,19 @@ const updateBoard = asyncMiddleware(async (req, res) => {
   });
 });
 
+const deleteGame = asyncMiddleware(async (req, res) => {
+  await models.Game.destroy({
+    where: {
+      id: req.params.id
+    }
+  });
+  res.json({ success: true, message: "Game deleted" });
+});
+
 module.exports = {
   home,
   start,
   play,
-  updateBoard
+  updateBoard,
+  deleteGame
 };
