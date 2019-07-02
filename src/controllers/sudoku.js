@@ -123,7 +123,7 @@ const updateBoard = asyncMiddleware(async (req, res) => {
       success: true,
       boardCompleted: true,
       game,
-      message: "Congratulations you finish this puzze!"
+      message: "Congratulations you have finished this puzze!"
     });
   }
 
