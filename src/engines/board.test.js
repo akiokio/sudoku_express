@@ -17,6 +17,18 @@ describe("Game", () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0]
   ];
 
+  const halfDoneBoard = [
+    [3, 8, 9, 6, 2, 7, 0, 0, 1],
+    [6, 5, 2, 1, 9, 4, 3, 7, 8],
+    [4, 1, 0, 5, 3, 8, 2, 9, 6],
+    [1, 9, 4, 7, 0, 5, 0, 3, 2],
+    [2, 7, 0, 4, 1, 3, 5, 6, 9],
+    [5, 0, 3, 9, 0, 2, 7, 1, 4],
+    [7, 4, 6, 0, 0, 0, 9, 0, 3],
+    [9, 0, 5, 2, 4, 6, 1, 8, 0],
+    [8, 0, 1, 0, 0, 9, 6, 4, 5]
+  ];
+
   const fullBoard = [
     [5, 3, 4, 6, 7, 8, 9, 1, 2],
     [6, 7, 2, 1, 9, 5, 3, 4, 8],
@@ -70,8 +82,32 @@ describe("Game", () => {
     expect(game.isBoardComplete()).toBeTruthy();
   });
 
+  test("it should solve a board successfully", () => {
+    game.board = halfDoneBoard;
+    expect(game.solveBoard(0, 0)).toBeTruthy();
+  });
+
   test("it should not solve an unsolvable board", () => {
     game.board = unsolvableBoard;
     expect(game.solveBoard(0, 0)).toBeFalsy();
+  });
+
+  describe("solver challenge", () => {
+    const solvableBoard = [
+      [5, 3, 0, 0, 7, 0, 0, 0, 0],
+      [6, 0, 0, 1, 9, 5, 0, 0, 0],
+      [0, 9, 8, 0, 0, 0, 0, 0, 6],
+      [8, 0, 0, 0, 6, 0, 0, 0, 0],
+      [4, 0, 0, 8, 0, 3, 0, 0, 0],
+      [7, 0, 0, 0, 2, 0, 0, 0, 0],
+      [0, 6, 0, 0, 0, 0, 0, 2, 8],
+      [0, 0, 0, 4, 1, 9, 0, 0, 0],
+      [0, 0, 0, 0, 8, 0, 0, 0, 7]
+    ];
+
+    it("should be capable of solving the example board", () => {
+      game.board = solvableBoard;
+      expect(game.solveBoard(0, 0)).toBeTruthy();
+    });
   });
 });
