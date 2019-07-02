@@ -6,7 +6,11 @@
   </a>
 </p>
 
-> A modern boilerplate for expressjs APIs
+> A Restful API for sudoku games
+
+## Live demo
+
+[Restful API](https://sudokuexpressapi.herokuapp.com/sudoku)
 
 ## Install
 
