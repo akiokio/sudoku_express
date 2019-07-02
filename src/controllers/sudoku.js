@@ -1,4 +1,5 @@
 const faker = require("faker");
+const { cloneDeep } = require("lodash");
 
 const asyncMiddleware = require("../middlewares/async");
 const models = require("../models");
@@ -143,10 +144,34 @@ const deleteGame = asyncMiddleware(async (req, res) => {
   res.json({ success: true, message: "Game deleted" });
 });
 
+const solveGame = asyncMiddleware(async (req, res) => {
+  const [game] = await models.Game.findAll({
+    where: {
+      id: req.params.id
+    }
+  });
+  if (!game) {
+    res.status(404).json({ success: false, error: "Game not found" });
+  }
+
+  const result = game.solveBoard(0, 0);
+  game.board = cloneDeep(game.board);
+  await game.save();
+
+  return res.json({
+    success: result,
+    game,
+    message: result
+      ? "Board solved successfully!"
+      : "This board is impossible to solve!"
+  });
+});
+
 module.exports = {
   home,
   start,
   play,
   updateBoard,
-  deleteGame
+  deleteGame,
+  solveGame
 };
