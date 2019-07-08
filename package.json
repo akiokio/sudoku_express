@@ -2,13 +2,22 @@
   "name": "sudoku_express",
   "version": "1.0.0",
   "description": "A modern boilerplate for expressjs APIs",
-  "main": "src/app.js",
-  "module": "src/app.js",
+  "main": "dist/server.js",
+  "module": "dist/server.js",
   "scripts": {
-    "start": "node src/app.js",
-    "start:dev": "nodemon src/app.js",
-    "start:debug": "nodemon --inspect src/app.js",
-    "test": "jest"
+    "debug": "npm run build && npm run watch-debug",
+    "serve-debug": "nodemon --inspect dist/server.js",
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\"",
+    "start": "npm run serve",
+    "build": "npm run build-ts && npm run tslint",
+    "serve": "node dist/server.js",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
+    "watch-node": "nodemon dist/server.js",
+    "build-ts": "tsc",
+    "watch-ts": "tsc -w",
+    "watch-test": "npm run test -- --watchAll",
+    "test": "jest --forceExit --coverage --verbose",
+    "tslint": "tslint -c tslint.json -p tsconfig.json"
   },
   "keywords": [],
   "author": "",
@@ -33,8 +42,12 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "@types/node": "^12.6.1",
+    "concurrently": "^4.1.1",
     "jest": "^24.8.0",
     "nodemon": "^1.19.1",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
   }
 }

@@ -15,7 +15,7 @@ const routes = require("./routes");
 
 const config = require("./config/config.js");
 
-const { name, user, password, options } = configure(config);
+const { name: dbName, user, password, options } = configure(config);
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -27,12 +27,12 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
+app.use(favicon(path.join(__dirname, "..", "public", "favicon.ico")));
 app.use("/static", express.static(path.join(__dirname, "public")));
 
 app.use(routes);
 
-const sequelize = new Sequelize(name, user, password, options);
+const sequelize = new Sequelize(dbName, user, password, options);
 
 sequelize
   .authenticate()
@@ -42,7 +42,6 @@ sequelize
     );
     app.listen(port, err => {
       if (err) {
-        Logger.error(err);
         process.exit(1);
         return;
       }
