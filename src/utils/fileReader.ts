@@ -1,10 +1,10 @@
 const fs = require("fs");
 
-const readJson = path => {
+const readJson = (path: string) => {
   return new Promise((resolve, reject) => {
     const readStream = fs.createReadStream(path);
-    let rawData = "";
-    readStream.on("data", chunk => (rawData += chunk));
+    let rawData: string = "";
+    readStream.on("data", (chunk: string) => (rawData += chunk));
     readStream.on("end", () => {
       try {
         const parsedData = JSON.parse(rawData);
@@ -14,7 +14,7 @@ const readJson = path => {
         reject(error);
       }
     });
-    readStream.on("error", error => {
+    readStream.on("error", (error: Error) => {
       reject(error);
     });
   });

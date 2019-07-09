@@ -1,7 +1,12 @@
-const http = require("http");
-const downloadJson = url => {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const http_1 = __importDefault(require("http"));
+const downloadJson = (url) => {
     return new Promise((resolve, reject) => {
-        http.get(url, res => {
+        http_1.default.get(url, res => {
             const { statusCode } = res;
             const contentType = res.headers["content-type"];
             let error;
@@ -20,7 +25,7 @@ const downloadJson = url => {
             }
             res.setEncoding("utf-8");
             let rawData = "";
-            res.on("data", chunk => {
+            res.on("data", (chunk) => {
                 rawData += chunk;
             });
             res.on("end", () => {
@@ -36,5 +41,5 @@ const downloadJson = url => {
         });
     });
 };
-module.exports = { downloadJson };
+exports.downloadJson = downloadJson;
 //# sourceMappingURL=downloader.js.map

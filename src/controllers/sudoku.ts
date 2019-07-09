@@ -1,10 +1,11 @@
+import { Request, Response } from "express";
 import faker from "faker";
 import { cloneDeep } from "lodash";
 
 import asyncMiddleware from "../middlewares/async";
 import models from "../models";
 
-const home = asyncMiddleware(async (req, res) => {
+const home = asyncMiddleware(async (req: Request, res: Response) => {
   const games = await models.Game.findAll();
   res.json({
     success: true,
@@ -16,7 +17,7 @@ const home = asyncMiddleware(async (req, res) => {
   });
 });
 
-const start = asyncMiddleware(async (req, res) => {
+const start = asyncMiddleware(async (req: Request, res: Response) => {
   const game = await models.Game.build({
     name: req.query.name || faker.lorem.words(2)
   });
@@ -35,7 +36,7 @@ const start = asyncMiddleware(async (req, res) => {
   });
 });
 
-const play = asyncMiddleware(async (req, res) => {
+const play = asyncMiddleware(async (req: Request, res: Response) => {
   const [game] = await models.Game.findAll({
     where: {
       id: req.params.id
@@ -54,7 +55,7 @@ const play = asyncMiddleware(async (req, res) => {
   });
 });
 
-const updateBoard = asyncMiddleware(async (req, res) => {
+const updateBoard = asyncMiddleware(async (req: Request, res: Response) => {
   const row = parseInt(req.body["row"]);
   const col = parseInt(req.body["col"]);
   const val = parseInt(req.body["val"]);
@@ -135,7 +136,7 @@ const updateBoard = asyncMiddleware(async (req, res) => {
   });
 });
 
-const deleteGame = asyncMiddleware(async (req, res) => {
+const deleteGame = asyncMiddleware(async (req: Request, res: Response) => {
   await models.Game.destroy({
     where: {
       id: req.params.id
@@ -144,7 +145,7 @@ const deleteGame = asyncMiddleware(async (req, res) => {
   res.json({ success: true, message: "Game deleted" });
 });
 
-const solveGame = asyncMiddleware(async (req, res) => {
+const solveGame = asyncMiddleware(async (req: Request, res: Response) => {
   const [game] = await models.Game.findAll({
     where: {
       id: req.params.id
