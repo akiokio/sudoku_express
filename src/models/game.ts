@@ -1,11 +1,11 @@
-import Sequelize from "sequelize";
+import { Sequelize, Model, DataTypes } from "sequelize";
 import { Request } from "express";
 import slugify from "slugify";
 
 import BoardEngine from "../engines/board";
 
-class Game extends BoardEngine(Sequelize.Model) {
-  static init(sequelize, DataTypes) {
+class Game extends BoardEngine(Model) {
+  static init(sequelize: Sequelize, DataTypes: DataTypes.DataType) {
     return super.init(
       {
         name: DataTypes.STRING,
@@ -16,7 +16,7 @@ class Game extends BoardEngine(Sequelize.Model) {
         sequelize,
         modelName: "Game",
         hooks: {
-          beforeValidate: game => {
+          beforeValidate: (game: Game) => {
             game.slug = slugify(game.name);
             return game;
           }
@@ -31,9 +31,9 @@ class Game extends BoardEngine(Sequelize.Model) {
     this.fuzzyBoard(17);
   }
 
-  getPlayUrl(req: Request) {
+  getPlayUrl(req: Request): string {
     return `${req.protocol}://${req.headers.host}/sudoku/play/${this.id}`;
   }
 }
 
-module.exports = Game;
+export default Game;

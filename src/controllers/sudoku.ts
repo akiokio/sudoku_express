@@ -4,12 +4,13 @@ import { cloneDeep } from "lodash";
 
 import asyncMiddleware from "../middlewares/async";
 import models, { dbType } from "../models";
+import Game from "../models/game";
 
 const home = asyncMiddleware(async (req: Request, res: Response) => {
   const games = await (models as dbType).Game.findAll();
   res.json({
     success: true,
-    games: games.map(game => ({
+    games: games.map((game: Game) => ({
       id: game.id,
       name: game.name,
       url: game.getPlayUrl(req)

@@ -2,27 +2,25 @@
 
 import fs from "fs";
 import path from "path";
-import Sequelize from "sequelize";
+import { Sequelize, Model, Options } from "sequelize";
+
+import Game from "../models/game";
 
 import configJson from "../config/config.js";
 
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || "development";
+const env: string = process.env.NODE_ENV || "development";
 
-const config = configJson[env];
-const db = {};
+const config: Options = configJson[env];
+const db: any = {};
 
-let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config
-  );
-}
+let sequelize: Sequelize;
+sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  config
+);
 
 fs.readdirSync(__dirname)
   .filter(file => {
@@ -33,8 +31,8 @@ fs.readdirSync(__dirname)
       !file.includes(".test.js")
     );
   })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file));
+  .forEach(async file => {
+    const model: Game = require(path.join(__dirname, file)).default;
     db[model.name] = model.init(sequelize, Sequelize);
   });
 
@@ -49,7 +47,7 @@ db.Sequelize = Sequelize;
 
 export type dbType = {
   Game: any;
-  sequelize: Sequelize.Sequelize;
+  sequelize: Sequelize;
 };
 
 export default db;

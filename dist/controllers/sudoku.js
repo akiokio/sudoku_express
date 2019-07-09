@@ -19,7 +19,7 @@ const home = async_1.default((req, res) => __awaiter(this, void 0, void 0, funct
     const games = yield models_1.default.Game.findAll();
     res.json({
         success: true,
-        games: games.map(game => ({
+        games: games.map((game) => ({
             id: game.id,
             name: game.name,
             url: game.getPlayUrl(req)
