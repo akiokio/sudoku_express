@@ -1,4 +1,4 @@
-const { shuffle } = require("lodash");
+import { shuffle } from "lodash";
 
 const EMPTY_VALUE = 0;
 const BOARD_SIZE = 9;
@@ -12,10 +12,10 @@ const BoardEngine = Board =>
 
     generateEmptyBoard() {
       this.board = Array(BOARD_SIZE)
-        .fill()
+        .fill(null, 0, BOARD_SIZE)
         .map(() =>
           Array(BOARD_SIZE)
-            .fill()
+            .fill(null, 0, BOARD_SIZE)
             .map(() => EMPTY_VALUE)
         );
     }
@@ -122,10 +122,10 @@ const BoardEngine = Board =>
       let isUsed = false;
 
       Array(3)
-        .fill()
+        .fill(null, 0, 3)
         .forEach((_, i) => {
           Array(3)
-            .fill()
+            .fill(null, 0, 3)
             .forEach((_, j) => {
               if (
                 this.board[boxStartRowIndex + i][boxColStartIndex + j] == value
@@ -196,5 +196,5 @@ const BoardEngine = Board =>
     }
   };
 
-module.exports = BoardEngine;
-module.exports.EMPTY_VALUE = EMPTY_VALUE;
+export default BoardEngine;
+export { EMPTY_VALUE };

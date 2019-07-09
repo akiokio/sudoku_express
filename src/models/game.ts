@@ -1,8 +1,8 @@
-"use strict";
-const Sequelize = require("sequelize");
-const slugify = require("slugify");
+import Sequelize from "sequelize";
+import { Request } from "express";
+import slugify from "slugify";
 
-const BoardEngine = require("../engines/board");
+import BoardEngine from "../engines/board";
 
 class Game extends BoardEngine(Sequelize.Model) {
   static init(sequelize, DataTypes) {
@@ -31,7 +31,7 @@ class Game extends BoardEngine(Sequelize.Model) {
     this.fuzzyBoard(17);
   }
 
-  getPlayUrl(req) {
+  getPlayUrl(req: Request) {
     return `${req.protocol}://${req.headers.host}/sudoku/play/${this.id}`;
   }
 }

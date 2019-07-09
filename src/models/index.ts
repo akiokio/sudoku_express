@@ -47,4 +47,9 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+export type dbType = {
+  Game: any;
+  sequelize: Sequelize.Sequelize;
+};
+
 export default db;

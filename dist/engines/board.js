@@ -1,5 +1,8 @@
-const { shuffle } = require("lodash");
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const lodash_1 = require("lodash");
 const EMPTY_VALUE = 0;
+exports.EMPTY_VALUE = EMPTY_VALUE;
 const BOARD_SIZE = 9;
 const VALID_DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const BoardEngine = Board => class extends Board {
@@ -8,9 +11,9 @@ const BoardEngine = Board => class extends Board {
     }
     generateEmptyBoard() {
         this.board = Array(BOARD_SIZE)
-            .fill()
+            .fill(null, 0, BOARD_SIZE)
             .map(() => Array(BOARD_SIZE)
-            .fill()
+            .fill(null, 0, BOARD_SIZE)
             .map(() => EMPTY_VALUE));
     }
     generateBoard() {
@@ -59,7 +62,7 @@ const BoardEngine = Board => class extends Board {
         return [false, candidateRow, candidateCol];
     }
     getPossibleNumbers(row, col) {
-        let localValidDigits = shuffle([...VALID_DIGITS]).filter(number => {
+        let localValidDigits = lodash_1.shuffle([...VALID_DIGITS]).filter(number => {
             return this.isValueApplicable(row, col, number);
         });
         return localValidDigits;
@@ -100,10 +103,10 @@ const BoardEngine = Board => class extends Board {
         }
         let isUsed = false;
         Array(3)
-            .fill()
+            .fill(null, 0, 3)
             .forEach((_, i) => {
             Array(3)
-                .fill()
+                .fill(null, 0, 3)
                 .forEach((_, j) => {
                 if (this.board[boxStartRowIndex + i][boxColStartIndex + j] == value) {
                     isUsed = true;
@@ -163,6 +166,5 @@ const BoardEngine = Board => class extends Board {
         return true;
     }
 };
-module.exports = BoardEngine;
-module.exports.EMPTY_VALUE = EMPTY_VALUE;
+exports.default = BoardEngine;
 //# sourceMappingURL=board.js.map

@@ -3,10 +3,10 @@ import faker from "faker";
 import { cloneDeep } from "lodash";
 
 import asyncMiddleware from "../middlewares/async";
-import models from "../models";
+import models, { dbType } from "../models";
 
 const home = asyncMiddleware(async (req: Request, res: Response) => {
-  const games = await models.Game.findAll();
+  const games = await (models as dbType).Game.findAll();
   res.json({
     success: true,
     games: games.map(game => ({
@@ -18,7 +18,7 @@ const home = asyncMiddleware(async (req: Request, res: Response) => {
 });
 
 const start = asyncMiddleware(async (req: Request, res: Response) => {
-  const game = await models.Game.build({
+  const game = await (models as dbType).Game.build({
     name: req.query.name || faker.lorem.words(2)
   });
 
@@ -37,7 +37,7 @@ const start = asyncMiddleware(async (req: Request, res: Response) => {
 });
 
 const play = asyncMiddleware(async (req: Request, res: Response) => {
-  const [game] = await models.Game.findAll({
+  const [game] = await (models as dbType).Game.findAll({
     where: {
       id: req.params.id
     }
@@ -60,7 +60,7 @@ const updateBoard = asyncMiddleware(async (req: Request, res: Response) => {
   const col = parseInt(req.body["col"]);
   const val = parseInt(req.body["val"]);
 
-  const [game] = await models.Game.findAll({
+  const [game] = await (models as dbType).Game.findAll({
     where: {
       id: req.params.id
     }
@@ -113,7 +113,7 @@ const updateBoard = asyncMiddleware(async (req: Request, res: Response) => {
     });
   }
 
-  await models.sequelize.query(
+  await (models as dbType).sequelize.query(
     `UPDATE "Games" SET board[${row + 1}][${col + 1}] = ${val} WHERE id = '${
       req.params.id
     }';`
@@ -137,7 +137,7 @@ const updateBoard = asyncMiddleware(async (req: Request, res: Response) => {
 });
 
 const deleteGame = asyncMiddleware(async (req: Request, res: Response) => {
-  await models.Game.destroy({
+  await (models as dbType).Game.destroy({
     where: {
       id: req.params.id
     }
@@ -146,7 +146,7 @@ const deleteGame = asyncMiddleware(async (req: Request, res: Response) => {
 });
 
 const solveGame = asyncMiddleware(async (req: Request, res: Response) => {
-  const [game] = await models.Game.findAll({
+  const [game] = await (models as dbType).Game.findAll({
     where: {
       id: req.params.id
     }
