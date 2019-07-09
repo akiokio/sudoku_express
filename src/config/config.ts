@@ -1,4 +1,18 @@
-const config = {
+interface ConnectionInfo {
+  username: string;
+  password?: string;
+  database: string;
+  host: string;
+  dialect: string;
+}
+
+interface Config {
+  development: ConnectionInfo;
+  test: ConnectionInfo;
+  production: ConnectionInfo;
+}
+
+const config: Config = {
   development: {
     username: "postgres",
     password: null,

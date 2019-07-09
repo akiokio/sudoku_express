@@ -8,7 +8,7 @@ const VALID_DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const BoardEngine = (ParentClass: any) =>
   class extends ParentClass {
-    board: number[][];
+    public board: number[][];
 
     static init(sequelize: Sequelize, DataTypes: DataTypes.DataType) {
       return super.init(sequelize, DataTypes);
