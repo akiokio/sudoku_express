@@ -1,5 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const asyncMiddleware = fn => (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch(next);
 };
-module.exports = asyncMiddleware;
+exports.default = asyncMiddleware;
 //# sourceMappingURL=async.js.map

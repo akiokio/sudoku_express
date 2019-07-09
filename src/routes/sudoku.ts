@@ -1,14 +1,14 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const {
+import {
   home,
   start,
   play,
   updateBoard,
   deleteGame,
   solveGame
-} = require("../controllers/sudoku");
+} from "../controllers/sudoku";
 
 router.get("/", home);
 router.get("/start", start);
@@ -17,4 +17,4 @@ router.post("/play/:id/", updateBoard);
 router.post("/delete/:id/", deleteGame);
 router.post("/solve/:id/", solveGame);
 
-module.exports = router;
+export default router;

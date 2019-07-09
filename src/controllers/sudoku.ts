@@ -1,8 +1,8 @@
-const faker = require("faker");
-const { cloneDeep } = require("lodash");
+import faker from "faker";
+import { cloneDeep } from "lodash";
 
-const asyncMiddleware = require("../middlewares/async");
-const models = require("../models");
+import asyncMiddleware from "../middlewares/async";
+import models from "../models";
 
 const home = asyncMiddleware(async (req, res) => {
   const games = await models.Game.findAll();
@@ -167,11 +167,4 @@ const solveGame = asyncMiddleware(async (req, res) => {
   });
 });
 
-module.exports = {
-  home,
-  start,
-  play,
-  updateBoard,
-  deleteGame,
-  solveGame
-};
+export { home, start, play, updateBoard, deleteGame, solveGame };

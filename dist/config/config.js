@@ -1,4 +1,6 @@
-module.exports = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const config = {
     development: {
         username: "postgres",
         password: null,
@@ -21,4 +23,5 @@ module.exports = {
         dialect: "postgres"
     }
 };
+exports.default = config;
 //# sourceMappingURL=config.js.map

@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,12 +7,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const faker = require("faker");
-const { cloneDeep } = require("lodash");
-const asyncMiddleware = require("../middlewares/async");
-const models = require("../models");
-const home = asyncMiddleware((req, res) => __awaiter(this, void 0, void 0, function* () {
-    const games = yield models.Game.findAll();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const faker_1 = __importDefault(require("faker"));
+const lodash_1 = require("lodash");
+const async_1 = __importDefault(require("../middlewares/async"));
+const models_1 = __importDefault(require("../models"));
+const home = async_1.default((req, res) => __awaiter(this, void 0, void 0, function* () {
+    const games = yield models_1.default.Game.findAll();
     res.json({
         success: true,
         games: games.map(game => ({
@@ -21,9 +26,10 @@ const home = asyncMiddleware((req, res) => __awaiter(this, void 0, void 0, funct
         }))
     });
 }));
-const start = asyncMiddleware((req, res) => __awaiter(this, void 0, void 0, function* () {
-    const game = yield models.Game.build({
-        name: req.query.name || faker.lorem.words(2)
+exports.home = home;
+const start = async_1.default((req, res) => __awaiter(this, void 0, void 0, function* () {
+    const game = yield models_1.default.Game.build({
+        name: req.query.name || faker_1.default.lorem.words(2)
     });
     game.initBoard();
     try {
@@ -38,8 +44,9 @@ const start = asyncMiddleware((req, res) => __awaiter(this, void 0, void 0, func
         game
     });
 }));
-const play = asyncMiddleware((req, res) => __awaiter(this, void 0, void 0, function* () {
-    const [game] = yield models.Game.findAll({
+exports.start = start;
+const play = async_1.default((req, res) => __awaiter(this, void 0, void 0, function* () {
+    const [game] = yield models_1.default.Game.findAll({
         where: {
             id: req.params.id
         }
@@ -56,11 +63,12 @@ const play = asyncMiddleware((req, res) => __awaiter(this, void 0, void 0, funct
         }
     });
 }));
-const updateBoard = asyncMiddleware((req, res) => __awaiter(this, void 0, void 0, function* () {
+exports.play = play;
+const updateBoard = async_1.default((req, res) => __awaiter(this, void 0, void 0, function* () {
     const row = parseInt(req.body["row"]);
     const col = parseInt(req.body["col"]);
     const val = parseInt(req.body["val"]);
-    const [game] = yield models.Game.findAll({
+    const [game] = yield models_1.default.Game.findAll({
         where: {
             id: req.params.id
         }
@@ -105,7 +113,7 @@ const updateBoard = asyncMiddleware((req, res) => __awaiter(this, void 0, void 0
             game
         });
     }
-    yield models.sequelize.query(`UPDATE "Games" SET board[${row + 1}][${col + 1}] = ${val} WHERE id = '${req.params.id}';`);
+    yield models_1.default.sequelize.query(`UPDATE "Games" SET board[${row + 1}][${col + 1}] = ${val} WHERE id = '${req.params.id}';`);
     yield game.reload();
     if (game.isBoardComplete()) {
         return res.status(200).json({
@@ -121,16 +129,18 @@ const updateBoard = asyncMiddleware((req, res) => __awaiter(this, void 0, void 0
         message: "Still work to do, keep going!"
     });
 }));
-const deleteGame = asyncMiddleware((req, res) => __awaiter(this, void 0, void 0, function* () {
-    yield models.Game.destroy({
+exports.updateBoard = updateBoard;
+const deleteGame = async_1.default((req, res) => __awaiter(this, void 0, void 0, function* () {
+    yield models_1.default.Game.destroy({
         where: {
             id: req.params.id
         }
     });
     res.json({ success: true, message: "Game deleted" });
 }));
-const solveGame = asyncMiddleware((req, res) => __awaiter(this, void 0, void 0, function* () {
-    const [game] = yield models.Game.findAll({
+exports.deleteGame = deleteGame;
+const solveGame = async_1.default((req, res) => __awaiter(this, void 0, void 0, function* () {
+    const [game] = yield models_1.default.Game.findAll({
         where: {
             id: req.params.id
         }
@@ -139,7 +149,7 @@ const solveGame = asyncMiddleware((req, res) => __awaiter(this, void 0, void 0, 
         res.status(404).json({ success: false, error: "Game not found" });
     }
     const result = game.solveBoard(0, 0);
-    game.board = cloneDeep(game.board);
+    game.board = lodash_1.cloneDeep(game.board);
     yield game.save();
     return res.json({
         success: result,
@@ -149,12 +159,5 @@ const solveGame = asyncMiddleware((req, res) => __awaiter(this, void 0, void 0, 
             : "This board is impossible to solve!"
     });
 }));
-module.exports = {
-    home,
-    start,
-    play,
-    updateBoard,
-    deleteGame,
-    solveGame
-};
+exports.solveGame = solveGame;
 //# sourceMappingURL=sudoku.js.map
