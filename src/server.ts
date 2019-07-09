@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 import express from "express";
-import Sequelize from "sequelize";
+import Sequelize, { Options } from "sequelize";
 import path from "path";
 import cors from "cors";
 import compression from "compression";
@@ -10,13 +10,11 @@ import bodyParser from "body-parser";
 import morgan from "morgan";
 import favicon from "serve-favicon";
 
-import { configure } from "sequelize-pg-utilities";
-
 import routes from "./routes";
+const env: string = process.env.NODE_ENV || "development";
 
 import config from "./config/config.js";
-
-const { name: dbName, user, password, options } = configure(config);
+const envDbConfig: Options = config[env];
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -33,7 +31,15 @@ app.use("/static", express.static(path.join(__dirname, "public")));
 
 app.use(routes);
 
-const sequelize = new Sequelize.Sequelize(dbName, user, password, options);
+const sequelize = new Sequelize.Sequelize(
+  envDbConfig.database,
+  envDbConfig.username,
+  envDbConfig.password,
+  {
+    host: envDbConfig.host,
+    dialect: envDbConfig.dialect
+  }
+);
 
 sequelize
   .authenticate()

@@ -1,14 +1,5 @@
 import { Options } from "sequelize";
 
-// export interface Config {
-//   username: string;
-//   password?: string;
-//   database: string;
-//   host: string;
-//   dialect: string;
-//   use_env_variable: string;
-// }
-
 export interface EnvConfig {
   [development: string]: Options;
   test: Options;

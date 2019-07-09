@@ -1,7 +1,8 @@
 "use strict";
+import { QueryInterface, DataTypes } from "sequelize";
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
+  up: (queryInterface: QueryInterface, dataTypes: DataTypes.DataType) => {
     return queryInterface.sequelize
       .query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";')
       .then(() => {
@@ -9,34 +10,34 @@ module.exports = {
           id: {
             allowNull: false,
             primaryKey: true,
-            type: Sequelize.UUID,
-            defaultValue: Sequelize.literal("uuid_generate_v4()")
+            type: dataTypes.UUID,
+            defaultValue: dataTypes.literal("uuid_generate_v4()")
           },
           name: {
-            type: Sequelize.STRING,
+            type: dataTypes.STRING,
             allowNull: false
           },
           slug: {
-            type: Sequelize.STRING,
+            type: dataTypes.STRING,
             allowNull: false
           },
           board: {
-            type: Sequelize.ARRAY(Sequelize.ARRAY(Sequelize.INTEGER))
+            type: dataTypes.ARRAY(dataTypes.ARRAY(dataTypes.INTEGER))
           },
           createdAt: {
             allowNull: false,
-            type: Sequelize.DATE,
-            defaultValue: Sequelize.literal("NOW()")
+            type: dataTypes.DATE,
+            defaultValue: dataTypes.literal("NOW()")
           },
           updatedAt: {
             allowNull: false,
-            type: Sequelize.DATE,
-            defaultValue: Sequelize.literal("NOW()")
+            type: dataTypes.DATE,
+            defaultValue: dataTypes.literal("NOW()")
           }
         });
       });
   },
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface: QueryInterface, dataTypes: DataTypes.DataType) => {
     return queryInterface.dropTable("Games");
   }
 };

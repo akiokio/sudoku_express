@@ -13,10 +13,10 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const morgan_1 = __importDefault(require("morgan"));
 const serve_favicon_1 = __importDefault(require("serve-favicon"));
-const sequelize_pg_utilities_1 = require("sequelize-pg-utilities");
 const routes_1 = __importDefault(require("./routes"));
+const env = process.env.NODE_ENV || "development";
 const config_js_1 = __importDefault(require("./config/config.js"));
-const { name: dbName, user, password, options } = sequelize_pg_utilities_1.configure(config_js_1.default);
+const envDbConfig = config_js_1.default[env];
 const app = express_1.default();
 const port = process.env.PORT || 8000;
 app.use(morgan_1.default("tiny"));
@@ -28,7 +28,10 @@ app.use(body_parser_1.default.json());
 app.use(serve_favicon_1.default(path_1.default.join(__dirname, "..", "public", "favicon.ico")));
 app.use("/static", express_1.default.static(path_1.default.join(__dirname, "public")));
 app.use(routes_1.default);
-const sequelize = new sequelize_1.default.Sequelize(dbName, user, password, options);
+const sequelize = new sequelize_1.default.Sequelize(envDbConfig.database, envDbConfig.username, envDbConfig.password, {
+    host: envDbConfig.host,
+    dialect: envDbConfig.dialect
+});
 sequelize
     .authenticate()
     .then(() => {
