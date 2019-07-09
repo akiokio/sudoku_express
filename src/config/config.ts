@@ -30,4 +30,4 @@ const config: EnvConfig = {
   }
 };
 
-export default config;
+module.exports = config;

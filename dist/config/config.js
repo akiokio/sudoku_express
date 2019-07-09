@@ -23,5 +23,5 @@ const config = {
         dialect: "postgres"
     }
 };
-exports.default = config;
+module.exports = config;
 //# sourceMappingURL=config.js.map

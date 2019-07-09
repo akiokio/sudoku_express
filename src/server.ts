@@ -13,7 +13,8 @@ import favicon from "serve-favicon";
 import routes from "./routes";
 const env: string = process.env.NODE_ENV || "development";
 
-import config from "./config/config.js";
+import * as config from "./config/config.js";
+// @ts-ignore: :shrug:
 const envDbConfig: Options = config[env];
 
 const app = express();

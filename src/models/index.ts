@@ -6,11 +6,12 @@ import { Sequelize, Model, Options } from "sequelize";
 
 import Game from "../models/game";
 
-import configJson from "../config/config.js";
+import * as configJson from "../config/config.js";
 
 const basename = path.basename(__filename);
 const env: string = process.env.NODE_ENV || "development";
 
+// @ts-ignore: :shrug:
 const config: Options = configJson[env];
 const db: any = {};
 
