@@ -5,7 +5,7 @@ const EMPTY_VALUE = 0;
 exports.EMPTY_VALUE = EMPTY_VALUE;
 const BOARD_SIZE = 9;
 const VALID_DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const BoardEngine = Board => class extends Board {
+const BoardEngine = (ParentClass) => class extends ParentClass {
     static init(sequelize, DataTypes) {
         return super.init(sequelize, DataTypes);
     }
@@ -45,7 +45,7 @@ const BoardEngine = Board => class extends Board {
         }
     }
     printBoard() {
-        this.board.forEach(row => {
+        this.board.forEach((row) => {
             console.log(row.join(","));
         });
     }
@@ -117,7 +117,7 @@ const BoardEngine = Board => class extends Board {
     }
     isBoardComplete() {
         let isComplete = true;
-        this.board.forEach(row => {
+        this.board.forEach((row) => {
             row.forEach(item => {
                 if (!this.isValueValid(item)) {
                     isComplete = false;

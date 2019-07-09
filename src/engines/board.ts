@@ -1,12 +1,16 @@
+import { Sequelize, DataTypes } from "sequelize";
+
 import { shuffle } from "lodash";
 
 const EMPTY_VALUE = 0;
 const BOARD_SIZE = 9;
 const VALID_DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-const BoardEngine = Board =>
-  class extends Board {
-    static init(sequelize, DataTypes) {
+const BoardEngine = (ParentClass: any) =>
+  class extends ParentClass {
+    board: number[][];
+
+    static init(sequelize: Sequelize, DataTypes: DataTypes.DataType) {
       return super.init(sequelize, DataTypes);
     }
 
@@ -25,8 +29,12 @@ const BoardEngine = Board =>
       this.solveBoard(0, 0);
     }
 
-    solveBoard(currentRow, currentCol) {
-      const [found, row, col] = this.getNextEmptySpace(currentRow, currentCol);
+    solveBoard(currentRow: number, currentCol: number): boolean {
+      const [found, row, col]: [
+        boolean,
+        number,
+        number
+      ] = this.getNextEmptySpace(currentRow, currentCol);
       if (!found) {
         return true;
       }
@@ -44,19 +52,22 @@ const BoardEngine = Board =>
       return false;
     }
 
-    fuzzyBoard(desiredEmptySpaces) {
+    fuzzyBoard(desiredEmptySpaces: number) {
       for (let i = 0; i < desiredEmptySpaces; i++) {
         this.applyRandomEmptySpace();
       }
     }
 
     printBoard() {
-      this.board.forEach(row => {
+      this.board.forEach((row: number[]) => {
         console.log(row.join(","));
       });
     }
 
-    getNextEmptySpace(currentRow, currentCol) {
+    getNextEmptySpace(
+      currentRow: number,
+      currentCol: number
+    ): [boolean, number, number] {
       let candidateRow,
         candidateCol,
         found = false;
@@ -76,18 +87,18 @@ const BoardEngine = Board =>
       return [false, candidateRow, candidateCol];
     }
 
-    getPossibleNumbers(row, col) {
+    getPossibleNumbers(row: number, col: number) {
       let localValidDigits = shuffle([...VALID_DIGITS]).filter(number => {
         return this.isValueApplicable(row, col, number);
       });
       return localValidDigits;
     }
 
-    isUsedInRow(rowIndex, value) {
+    isUsedInRow(rowIndex: number, value: number): boolean {
       return this.board[rowIndex].includes(value);
     }
 
-    isUsedInColumn(colIndex, value) {
+    isUsedInColumn(colIndex: number, value: number): boolean {
       const columnValues = [];
       for (let i = 0; i < BOARD_SIZE; i++) {
         columnValues.push(this.board[i][colIndex]);
@@ -95,7 +106,7 @@ const BoardEngine = Board =>
       return columnValues.includes(value);
     }
 
-    isUsedInBox(rowIndex, colIndex, value) {
+    isUsedInBox(rowIndex: number, colIndex: number, value: number): boolean {
       let boxStartRowIndex = -1;
       let boxColStartIndex = -1;
 
@@ -137,9 +148,9 @@ const BoardEngine = Board =>
       return isUsed;
     }
 
-    isBoardComplete() {
+    isBoardComplete(): boolean {
       let isComplete = true;
-      this.board.forEach(row => {
+      this.board.forEach((row: number[]) => {
         row.forEach(item => {
           if (!this.isValueValid(item)) {
             isComplete = false;
@@ -149,7 +160,7 @@ const BoardEngine = Board =>
       return isComplete;
     }
 
-    isEmptySpace(row, col) {
+    isEmptySpace(row: number, col: number): boolean {
       return this.board[row][col] == EMPTY_VALUE;
     }
 
@@ -163,14 +174,14 @@ const BoardEngine = Board =>
       }
     }
 
-    isValueValid(value) {
+    isValueValid(value: number): boolean {
       if (value < 1 || value > 9) {
         return false;
       }
       return true;
     }
 
-    isValueApplicable(row, col, value) {
+    isValueApplicable(row: number, col: number, value: number): boolean {
       if (
         this.isUsedInRow(row, value) ||
         this.isUsedInColumn(col, value) ||
@@ -181,14 +192,14 @@ const BoardEngine = Board =>
       return true;
     }
 
-    isRowValid(row) {
+    isRowValid(row: number): boolean {
       if (row < 0 || row > BOARD_SIZE - 1) {
         return false;
       }
       return true;
     }
 
-    isColValid(col) {
+    isColValid(col: number): boolean {
       if (col < 0 || col > BOARD_SIZE - 1) {
         return false;
       }
