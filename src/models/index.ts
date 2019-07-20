@@ -6,7 +6,7 @@ import { Sequelize, Model, Options } from "sequelize";
 
 import Game from "../models/game";
 
-import * as configJson from "../config/config.js";
+import * as configJson from "../config/config";
 
 const basename = path.basename(__filename);
 const env: string = process.env.NODE_ENV || "development";
